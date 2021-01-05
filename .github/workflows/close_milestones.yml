@@ -15,9 +15,11 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             });
-            releaseMilestons = milestones.data.filter((mlst)=>{mlst.title.endsWith("_release")});
+            releaseMilestons = milestones.data.filter((mlst)=>{return mlst.title.endsWith("_release")});
+            console.log(releaseMilestons);
             now = new Date();
             today = new Date(now.getFullYear() + "/" + now.getMonth()+1 + "/" + now.getDate());
+            console.log(today);
             closeMilestoneNumbers = [];
             for(mlst of releaseMilestons){
               title = mlst.title;
@@ -27,6 +29,7 @@ jobs:
               mm = dateValues[1];
               dd = dateValues[2];
               mlstDate = new Date(yyyy + "/" + mm + "/" + dd);
+              console.log(mlstDate);
               if(mlstDate.getTime() < today.getTime()){
                 closeMilestoneNumbers.push(mlst.number);
               }
