@@ -1,0 +1,37 @@
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  close:
+    if: contains(github.event.comment.html_url, '/issues/') && startsWith(github.event.comment.body, '/delete_mlst')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            milestones = await github.issues.listMilestones({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              })
+            };
+            releaseMilestons = milestones.filter((mlst)=>{mlst.title.endsWith("_release")});
+            now = new Date();
+            today = new Date(now.getFullYear() + "/" + now.getMonth()+1 + "/" + now.getDate());
+            closeMilestoneNumbers = [];
+            for(mlst of releaseMilestons){
+              title = mlst.title;
+              dateValues = title.split("_");
+              if(dateValues.length < 4){continue;}
+              yyyy = dateValues[0];
+              mm = dateValues[1];
+              dd = dateValues[2];
+              mlstDate = new Date(yyyy + "/" + mm + "/" + dd);
+              if(mlstDate.getTime() < today.getTime()){
+                closeMilestoneNumbers.push(mlst.number);
+              }
+            }
+            console.log(closeMilestoneNumbers);
+            
+            
