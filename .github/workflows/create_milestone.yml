@@ -1,6 +1,6 @@
 on:
   issues:
-    types: [opened]
+    types: [labeled]
 
 jobs:
   comment:
@@ -10,9 +10,20 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '👋 Thanks for reporting!'
-            })
+            d = new Date();
+            offsetDate = 3;
+            d.setDate(d.getDate()+offsetDate);
+            yyyy = d.getFullYear().toString();
+            mm = ("0" + d.getMonth()+1).slice(-2);
+            dd = ("0" + d.getDate()).slice(-2);
+            hhs = ["", "_11", "_15", "_17"];
+            base = yyyy + "_" + mm + "_" + dd;
+            titles = hhs.map((hh)=>{ return base + hh + "_release" });
+            
+            for(title of titles){
+              github.issues.createMilestone({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title
+              })
+            }
