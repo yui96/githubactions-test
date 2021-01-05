@@ -15,12 +15,15 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             });
+            
+            // release以外のマイルストーンがある可能性を考慮
             releaseMilestons = milestones.data.filter((mlst)=>{return mlst.title.endsWith("_release")});
-            console.log(releaseMilestons);
+            
+            // 現在日時の時刻が00:00:00のDateを用意し、これより古いマイルストーンはcloseする
             now = new Date();
-            today = new Date(now.getFullYear() + "/" + now.getMonth()+1 + "/" + now.getDate());
-            console.log(today);
+            today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
             closeMilestoneNumbers = [];
+            
             for(mlst of releaseMilestons){
               title = mlst.title;
               dateValues = title.split("_");
@@ -28,14 +31,13 @@ jobs:
               yyyy = dateValues[0];
               mm = dateValues[1];
               dd = dateValues[2];
-              mlstDate = new Date(yyyy + "/" + mm + "/" + dd);
-              console.log(mlstDate);
+              mlstDate = new Date(yyyy + "-" + mm + "-" + dd);
               if(mlstDate.getTime() < today.getTime()){
                 closeMilestoneNumbers.push(mlst.number);
               }
             }
-            console.log(closeMilestoneNumbers);
             
+            // close処理
             for(mlstNumber of closeMilestoneNumbers){
               github.issues.updateMilestone({
                 owner: context.repo.owner,
