@@ -11,10 +11,11 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            milestones = await github.issues.listMilestones({
+            const milestones = await github.issues.listMilestones({
               owner: context.repo.owner,
               repo: context.repo.repo
             });
+            console.log(milestones);
             releaseMilestons = milestones.filter((mlst)=>{mlst.title.endsWith("_release")});
             now = new Date();
             today = new Date(now.getFullYear() + "/" + now.getMonth()+1 + "/" + now.getDate());
