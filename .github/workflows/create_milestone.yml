@@ -1,3 +1,5 @@
+name: create_milestones
+
 on:
   issue_comment:
     types: [created]
@@ -12,16 +14,20 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const d = new Date();
-            const offsetDate = 3;
+            const offsetDate = 5;
             d.setDate(d.getDate()+offsetDate);
-            const yyyy = d.getFullYear().toString();
+            
+            // 土日だったらスキップさせたほうがいいかも
+            
+            const yyyy = d.getFullYear();
             const mm = ("0" + d.getMonth()+1).slice(-2);
             const dd = ("0" + d.getDate()).slice(-2);
-            const hhs = ["", "_11", "_15", "_17"];
+            const hhs = ["", "_11"]; //詳細な時間忘れた
             const base = yyyy + "_" + mm + "_" + dd;
             const titles = hhs.map((hh)=>{ return base + hh + "_release" });
+            console.log(titles);
             
-            for(title of titles){
+            for(const title of titles){
               github.issues.createMilestone({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
