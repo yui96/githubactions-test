@@ -36,4 +36,12 @@ jobs:
             }
             console.log(closeMilestoneNumbers);
             
+            for(mlstNumber of closeMilestoneNumbers){
+              github.issues.updateMilestone({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                milestone_number: mlstNumber,
+                state: "closed"
+              });
+            }
             
