@@ -4,7 +4,7 @@ on:
 
 jobs:
   close:
-    if: contains(github.event.comment.html_url, '/issues/') && startsWith(github.event.comment.body, '/delete_mlst')
+    if: contains(github.event.comment.html_url, '/issues/') && startsWith(github.event.comment.body, '/close_mlst')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v3
@@ -12,10 +12,9 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             milestones = await github.issues.listMilestones({
-                owner: context.repo.owner,
-                repo: context.repo.repo
-              })
-            };
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
             releaseMilestons = milestones.filter((mlst)=>{mlst.title.endsWith("_release")});
             now = new Date();
             today = new Date(now.getFullYear() + "/" + now.getMonth()+1 + "/" + now.getDate());
