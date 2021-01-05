@@ -15,8 +15,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo
             });
-            console.log(milestones);
-            releaseMilestons = milestones.filter((mlst)=>{mlst.title.endsWith("_release")});
+            releaseMilestons = milestones.data.filter((mlst)=>{mlst.title.endsWith("_release")});
             now = new Date();
             today = new Date(now.getFullYear() + "/" + now.getMonth()+1 + "/" + now.getDate());
             closeMilestoneNumbers = [];
