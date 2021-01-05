@@ -11,15 +11,15 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            d = new Date();
-            offsetDate = 3;
+            const d = new Date();
+            const offsetDate = 3;
             d.setDate(d.getDate()+offsetDate);
-            yyyy = d.getFullYear().toString();
-            mm = ("0" + d.getMonth()+1).slice(-2);
-            dd = ("0" + d.getDate()).slice(-2);
-            hhs = ["", "_11", "_15", "_17"];
-            base = yyyy + "_" + mm + "_" + dd;
-            titles = hhs.map((hh)=>{ return base + hh + "_release" });
+            const yyyy = d.getFullYear().toString();
+            const mm = ("0" + d.getMonth()+1).slice(-2);
+            const dd = ("0" + d.getDate()).slice(-2);
+            consthhs = ["", "_11", "_15", "_17"];
+            const base = yyyy + "_" + mm + "_" + dd;
+            const titles = hhs.map((hh)=>{ return base + hh + "_release" });
             
             for(title of titles){
               github.issues.createMilestone({
