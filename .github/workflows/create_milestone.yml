@@ -1,9 +1,10 @@
 on:
-  issues:
-    types: [labeled]
+  issue_comment:
+    types: [created]
 
 jobs:
-  comment:
+  create:
+    if: contains(github.event.comment.html_url, '/issues/') && startsWith(github.event.comment.body, '/create_mlst')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v3
