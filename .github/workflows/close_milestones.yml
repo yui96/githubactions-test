@@ -1,12 +1,13 @@
 name: close_milestons
 
 on:
-  issue_comment:
-    types: [created]
+  schedule:
+    # 日次9:00(JST)に処理を実行する。
+    - cron: '0 0 * * *'
 
 jobs:
   close:
-    if: contains(github.event.comment.html_url, '/issues/') && startsWith(github.event.comment.body, '/close_mlst')
+    # if: contains(github.event.comment.html_url, '/issues/') && startsWith(github.event.comment.body, '/close_mlst')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v3
@@ -19,23 +20,23 @@ jobs:
             });
             
             // release以外のマイルストーンがある可能性を考慮（いる？）
-            releaseMilestons = milestones.data.filter((mlst)=>{return mlst.title.endsWith("_release")});
+            const releaseMilestons = milestones.data.filter((mlst)=>{return mlst.title.endsWith("_release")});
             
             // 現在日時の時刻が00:00:00のDateを用意し、これより古いマイルストーンはcloseする
-            now = new Date();
-            today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            closeMilestoneNumbers = [];
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const closeMilestoneNumbers = [];
             
-            for(mlst of releaseMilestons){
-              title = mlst.title;
+            for(const mlst of releaseMilestons){
+              const title = mlst.title;
               
               // [0-9]{4}_[0-9]{2}_[0-9]{2}みたいな正規表現マッチでもっと簡単にできそう
-              dateValues = title.split("_");
+              const dateValues = title.split("_");
               if(dateValues.length < 4){continue;}
-              yyyy = dateValues[0];
-              mm = dateValues[1];
-              dd = dateValues[2];
-              mlstDate = new Date(yyyy + "-" + mm + "-" + dd);
+              const yyyy = dateValues[0];
+              const mm = dateValues[1];
+              const dd = dateValues[2];
+              const mlstDate = new Date(yyyy + "-" + mm + "-" + dd);
               if(mlstDate.getTime() < today.getTime()){
                 closeMilestoneNumbers.push(mlst.number);
               }
