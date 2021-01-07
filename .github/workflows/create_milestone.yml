@@ -14,14 +14,13 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const d = new Date();
-            console.log(d.toISOString().substr(0,10).replace(/-/g, "_"));
             const offsetDate = 5;
             d.setDate(d.getDate()+offsetDate);
             
             // 土日だったらスキップさせたほうがいいかも
             
             const hhs = ["", "_11"]; //詳細な時間忘れた
-            const base = d.toISOString().substr(0,10).replaceAll("-", "_");
+            const base = d.toISOString().substr(0,10).replace(/-/g, "_");
             const titles = hhs.map((hh)=>{ return base + hh + "_release" });
             console.log(titles);
             
