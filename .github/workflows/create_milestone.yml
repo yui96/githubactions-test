@@ -14,6 +14,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const d = new Date();
+            console.log(d.toISOString());
             const offsetDate = 5;
             d.setDate(d.getDate()+offsetDate);
             
