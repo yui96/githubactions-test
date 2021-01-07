@@ -21,7 +21,7 @@ jobs:
             // 土日だったらスキップさせたほうがいいかも
             
             const hhs = ["", "_11"]; //詳細な時間忘れた
-            const base = d.toISOString().substr(0,10).replaceAll("-", "_")
+            const base = d.toISOString().substr(0,10).replaceAll("-", "_");
             const titles = hhs.map((hh)=>{ return base + hh + "_release" });
             console.log(titles);
             
