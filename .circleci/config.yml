@@ -15,7 +15,7 @@ jobs:
     steps:
       - run:
           name: "Say hello"
-          command: "echo Hello, World!"
+          command: "echo Hello, World! $CIRCLE_WORKFLOW_ID $CIRCLE_WORKFLOW_UPSTREAM_JOB_IDS"
 
   say-hallo2:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
@@ -37,6 +37,8 @@ workflows:
       - say-hello
       - hold: # <<< CircleCI Web アプリケーションでの手動承認を必要とするジョブ。
           type: approval
+          requires:
+            - say-hello
       - say-hallo2:
           requires:
             - hold
