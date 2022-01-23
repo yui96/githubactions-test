@@ -37,6 +37,6 @@ workflows:
       - say-hello
       - hold: # <<< CircleCI Web アプリケーションでの手動承認を必要とするジョブ。
           type: approval
-      - say-hallo2
+      - say-hallo2:
           requires:
             - hold
