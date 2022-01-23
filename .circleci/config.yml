@@ -15,7 +15,7 @@ jobs:
     steps:
       - run:
           name: "Say hello"
-          command: "echo Hello, World! $CIRCLE_WORKFLOW_ID $CIRCLE_WORKFLOW_UPSTREAM_JOB_IDS"
+          command: "echo Hello, World! $CIRCLE_WORKFLOW_ID $CIRCLE_WORKFLOW_UPSTREAM_JOB_IDS $CIRCLE_WORKFLOW_JOB_ID"
 
   say-hallo2:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
